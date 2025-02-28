@@ -34,3 +34,4 @@
 /home/haarish/Documents/dotnet/MicroServices/Authentication/JwtAuthentication/obj/Debug/net9.0/refint/JwtAuthentication.dll
 /home/haarish/Documents/dotnet/MicroServices/Authentication/JwtAuthentication/obj/Debug/net9.0/JwtAuthentication.pdb
 /home/haarish/Documents/dotnet/MicroServices/Authentication/JwtAuthentication/obj/Debug/net9.0/ref/JwtAuthentication.dll
+/home/haarish/Documents/dotnet/MicroServices/Authentication/JwtAuthentication/obj/Debug/net9.0/JwtAuthentication.sourcelink.json

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "84TZrryiPYY=",
+  "dgSpecHash": "cpnE0pyPnoY=",
   "success": true,
   "projectFilePath": "/home/haarish/Documents/dotnet/MicroServices/UserService/UserService.csproj",
   "expectedPackageFiles": [
@@ -117,6 +117,7 @@
     "/home/haarish/.nuget/packages/microsoft.visualstudio.web.codegeneration.utils/9.0.0/microsoft.visualstudio.web.codegeneration.utils.9.0.0.nupkg.sha512",
     "/home/haarish/.nuget/packages/microsoft.visualstudio.web.codegenerators.mvc/9.0.0/microsoft.visualstudio.web.codegenerators.mvc.9.0.0.nupkg.sha512",
     "/home/haarish/.nuget/packages/mono.texttemplating/3.0.0/mono.texttemplating.3.0.0.nupkg.sha512",
+    "/home/haarish/.nuget/packages/mysqlconnector/2.4.0/mysqlconnector.2.4.0.nupkg.sha512",
     "/home/haarish/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512",
     "/home/haarish/.nuget/packages/nuget.common/6.11.0/nuget.common.6.11.0.nupkg.sha512",
     "/home/haarish/.nuget/packages/nuget.configuration/6.11.0/nuget.configuration.6.11.0.nupkg.sha512",
@@ -127,6 +128,7 @@
     "/home/haarish/.nuget/packages/nuget.projectmodel/6.11.0/nuget.projectmodel.6.11.0.nupkg.sha512",
     "/home/haarish/.nuget/packages/nuget.protocol/6.11.0/nuget.protocol.6.11.0.nupkg.sha512",
     "/home/haarish/.nuget/packages/nuget.versioning/6.11.0/nuget.versioning.6.11.0.nupkg.sha512",
+    "/home/haarish/.nuget/packages/pomelo.entityframeworkcore.mysql/9.0.0-preview.3.efcore.9.0.0/pomelo.entityframeworkcore.mysql.9.0.0-preview.3.efcore.9.0.0.nupkg.sha512",
     "/home/haarish/.nuget/packages/swashbuckle.aspnetcore/6.6.2/swashbuckle.aspnetcore.6.6.2.nupkg.sha512",
     "/home/haarish/.nuget/packages/swashbuckle.aspnetcore.swagger/6.6.2/swashbuckle.aspnetcore.swagger.6.6.2.nupkg.sha512",
     "/home/haarish/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.6.2/swashbuckle.aspnetcore.swaggergen.6.6.2.nupkg.sha512",

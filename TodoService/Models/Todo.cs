@@ -10,6 +10,8 @@ public class Todo {
     [MaxLength(50)]
     public string Username {get; set;}
     [Required]
+    public long UserId {get; set;}
+    [Required]
     [MinLength(1)]
     [MaxLength(50)]
     public string Description {get; set;}

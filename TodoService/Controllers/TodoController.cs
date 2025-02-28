@@ -21,12 +21,41 @@ public class TodoController : ControllerBase {
         _jwtTokenHandler = jwtTokenHandler;
     }
 
-    // [HttpGet]
-    // [Authorize (Roles = ("Admin"))]
-    // public async Task<ActionResult<IEnumerable<User>>> GetAllTodos() {
-    //     var todos = await _context.Todos.ToListAsync();
-    //     return Ok(todos);
-    // }
+    [HttpGet("{id}")]
+    [Authorize]
+    public async Task<ActionResult<IEnumerable<Todo>>> GetAllTodosOfUser(long id) {
+        TokenData? tokenData = getUserDetailsFromToken();
+        if (tokenData == null) {
+            return Unauthorized();
+        }
+        int? idFromToken = tokenData.Id;
+        if (idFromToken != id) {
+            Console.WriteLine("Id from token does not match id");
+            return Unauthorized();
+        }
+        // TODO :- Check if user exists using microservice communication
+
+        // var todos = await _context.Todos.ToListAsync();
+        // todos =_context.Todos.Where(u => u.UserId == id).ToListAsync();
+        var todos = await _context.Todos
+        .Where(u => u.UserId == id)
+        .ToListAsync();
+        return Ok(todos);
+    }
+
+    [HttpPost("{id}")]
+    [Authorize]
+    public async Task<ActionResult<IEnumerable<Todo>>> addTodo(long id, AddTodoRequest addTodoRequest) {
+        TokenData? tokenData = getUserDetailsFromToken();
+        if (tokenData == null) {
+            return Unauthorized();
+        }
+        int? idFromToken = tokenData.Id;
+        if (idFromToken != id) {
+            Console.WriteLine("Id from token does not match id");
+            return Unauthorized();
+        }
+    }
 
     // [HttpGet("{id}")]
     // [Authorize (Roles = ("Admin"))]
@@ -91,4 +120,23 @@ public class TodoController : ControllerBase {
     //         user.Username == e.Username || user.Email == e.Email
     //     );
     // }
+
+    private TokenData? getUserDetailsFromToken() {
+        var tokenData = User.FindFirst(JwtRegisteredClaimNames.Name);
+        if (tokenData == null) {
+            Console.WriteLine("tokenData is null");
+            return null;
+        }
+        Console.WriteLine(tokenData);
+        Console.WriteLine(tokenData.ToString().Split('-').ElementAt(0).Split(": ")[1]);
+        Console.WriteLine(tokenData.ToString().Split('-').ElementAt(1));
+        int idFromToken = int.Parse(tokenData.ToString().Split('-').ElementAt(0).Split(": ")[1]);
+        string usernameFromToken = tokenData.ToString().Split('-').ElementAt(1);
+        return new TokenData {Id = idFromToken, Username = usernameFromToken};
+    }
+}
+
+class TokenData {
+    public int? Id {get; set;}
+    public string? Username {get; set;}
 }

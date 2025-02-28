@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/haarish/Documents/dotnet/docker-test/TodoService/TodoService.csproj": {}
+    "/home/haarish/Documents/dotnet/MicroServices/TodoService/TodoService.csproj": {}
   },
   "projects": {
-    "/home/haarish/Documents/dotnet/docker-test/Authentication/JwtAuthentication/JwtAuthentication.csproj": {
+    "/home/haarish/Documents/dotnet/MicroServices/Authentication/JwtAuthentication/JwtAuthentication.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/haarish/Documents/dotnet/docker-test/Authentication/JwtAuthentication/JwtAuthentication.csproj",
+        "projectUniqueName": "/home/haarish/Documents/dotnet/MicroServices/Authentication/JwtAuthentication/JwtAuthentication.csproj",
         "projectName": "JwtAuthentication",
-        "projectPath": "/home/haarish/Documents/dotnet/docker-test/Authentication/JwtAuthentication/JwtAuthentication.csproj",
+        "projectPath": "/home/haarish/Documents/dotnet/MicroServices/Authentication/JwtAuthentication/JwtAuthentication.csproj",
         "packagesPath": "/home/haarish/.nuget/packages/",
-        "outputPath": "/home/haarish/Documents/dotnet/docker-test/Authentication/JwtAuthentication/obj/",
+        "outputPath": "/home/haarish/Documents/dotnet/MicroServices/Authentication/JwtAuthentication/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/haarish/.nuget/NuGet/NuGet.Config"
@@ -82,14 +82,14 @@
         }
       }
     },
-    "/home/haarish/Documents/dotnet/docker-test/TodoService/TodoService.csproj": {
+    "/home/haarish/Documents/dotnet/MicroServices/TodoService/TodoService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/haarish/Documents/dotnet/docker-test/TodoService/TodoService.csproj",
+        "projectUniqueName": "/home/haarish/Documents/dotnet/MicroServices/TodoService/TodoService.csproj",
         "projectName": "TodoService",
-        "projectPath": "/home/haarish/Documents/dotnet/docker-test/TodoService/TodoService.csproj",
+        "projectPath": "/home/haarish/Documents/dotnet/MicroServices/TodoService/TodoService.csproj",
         "packagesPath": "/home/haarish/.nuget/packages/",
-        "outputPath": "/home/haarish/Documents/dotnet/docker-test/TodoService/obj/",
+        "outputPath": "/home/haarish/Documents/dotnet/MicroServices/TodoService/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/haarish/.nuget/NuGet/NuGet.Config"
@@ -105,8 +105,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "/home/haarish/Documents/dotnet/docker-test/Authentication/JwtAuthentication/JwtAuthentication.csproj": {
-                "projectPath": "/home/haarish/Documents/dotnet/docker-test/Authentication/JwtAuthentication/JwtAuthentication.csproj"
+              "/home/haarish/Documents/dotnet/MicroServices/Authentication/JwtAuthentication/JwtAuthentication.csproj": {
+                "projectPath": "/home/haarish/Documents/dotnet/MicroServices/Authentication/JwtAuthentication/JwtAuthentication.csproj"
               }
             }
           }

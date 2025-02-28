@@ -1078,3 +1078,5 @@
 /home/haarish/Documents/dotnet/MicroServices/UserService/obj/Debug/net9.0/UserService.pdb
 /home/haarish/Documents/dotnet/MicroServices/UserService/obj/Debug/net9.0/UserService.genruntimeconfig.cache
 /home/haarish/Documents/dotnet/MicroServices/UserService/obj/Debug/net9.0/ref/UserService.dll
+/home/haarish/Documents/dotnet/MicroServices/UserService/bin/Debug/net9.0/MySqlConnector.dll
+/home/haarish/Documents/dotnet/MicroServices/UserService/bin/Debug/net9.0/Pomelo.EntityFrameworkCore.MySql.dll

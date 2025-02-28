@@ -30,7 +30,7 @@ public class UserController : ControllerBase {
         //     tempList.Add(new UserAccount { Id = user.Id, Username = user.Username, Password = user.Password, Role = "User" } )
         // );
         // _jwtTokenHandler.AddUsers(tempList);
-        AddDefaultUsers();
+        // AddDefaultUsers();
     }
 
     // For development purpose
@@ -42,7 +42,7 @@ public class UserController : ControllerBase {
             new User { Id = 2, Username = "test1", Password = "Test1123", Email = "test1@gmail.com", Name = "Test1" },
         };
         users.ForEach(async user => {
-            if (userExists(user)) return;
+            // if (userExists(user)) return;
             if (user.Username.Equals("test")) {
                 tempList.Add(new UserAccount { Id = user.Id, Username = user.Username, Password = user.Password, Role = "Admin" } );
             } else {
@@ -55,7 +55,8 @@ public class UserController : ControllerBase {
     }
 
     [HttpGet]
-    [Authorize (Roles = ("Admin"))]
+    // [Authorize (Roles = ("Admin"))]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<User>>> GetAllUsers() {
         var users = await _context.Users.ToListAsync();
         return Ok(users);
@@ -95,7 +96,8 @@ public class UserController : ControllerBase {
             Name = addUserRequest.Name,
             Password = addUserRequest.Password
         };
-        if (userExists(user)) {
+        bool exists = await userExists(user);
+        if (exists) {
             return BadRequest();
         }
         _context.Users.Add(user);
@@ -131,7 +133,8 @@ public class UserController : ControllerBase {
         try {
             await _context.SaveChangesAsync();
         } catch(DbUpdateConcurrencyException) {
-            if (!userExists(user)) return NotFound();
+            bool exists = await userExists(user);
+            if (!exists) return NotFound();
         }
         return Ok(user);
     }
@@ -153,10 +156,11 @@ public class UserController : ControllerBase {
         return Ok("Delete successfully");
     }
 
-    private bool userExists(User user) {
-        return _context.Users.Any(e => 
+    private Task<bool> userExists(User user) {
+        bool result = _context.Users.Any(e => 
             user.Username == e.Username || user.Email == e.Email
         );
+        return Task.FromResult(result);
     }
 
     private TokenData? getUserDetailsFromToken() {
