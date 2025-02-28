@@ -1,0 +1,19 @@
+{
+    "Routes": [
+        {
+            "UpstreamPathTemplate": "/api/User/{everything}",
+            "UpstreamHttpMethod": [ "POST", "PUT", "GET" ],
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                "Host": "localhost",
+                "Port": "5110"
+                }
+            ],
+            "DownstreamPathTemplate": "/api/User/{everything}"
+        }
+    ],
+    "GlobalConfiguration" : {
+
+    }
+}
