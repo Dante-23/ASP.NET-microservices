@@ -15,4 +15,6 @@ public class Todo {
     [MinLength(1)]
     [MaxLength(50)]
     public string Description {get; set;}
+    [Required]
+    public bool IsCompleted {get; set;}
 }

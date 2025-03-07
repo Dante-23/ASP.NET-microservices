@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using TodoService.Clients;
 
 namespace TodoService.Controllers;
 
@@ -16,14 +17,19 @@ namespace TodoService.Controllers;
 public class TodoController : ControllerBase {
     private readonly JwtTokenHandler _jwtTokenHandler;
     private readonly TodoDbContext _context;
-    public TodoController(TodoDbContext context, JwtTokenHandler jwtTokenHandler) {
+    private readonly UserServiceClient _userServiceClient;
+    public TodoController(TodoDbContext context, JwtTokenHandler jwtTokenHandler, UserServiceClient userServiceClient) {
         _context = context;
         _jwtTokenHandler = jwtTokenHandler;
+        _userServiceClient = userServiceClient;
     }
 
     [HttpGet("{id}")]
-    [Authorize]
+    // [Authorize]
     public async Task<ActionResult<IEnumerable<Todo>>> GetAllTodosOfUser(long id) {
+        Console.WriteLine("GetAllTodosOfUser");
+        _userServiceClient.TestUserMicroCommApi();
+        return Ok("Ok");
         TokenData? tokenData = getUserDetailsFromToken();
         if (tokenData == null) {
             return Unauthorized();
@@ -45,7 +51,7 @@ public class TodoController : ControllerBase {
 
     [HttpPost("{id}")]
     [Authorize]
-    public async Task<ActionResult<IEnumerable<Todo>>> addTodo(long id, AddTodoRequest addTodoRequest) {
+    public async Task<ActionResult<IEnumerable<Todo>>> AddTodo(long id, Todo todo) {
         TokenData? tokenData = getUserDetailsFromToken();
         if (tokenData == null) {
             return Unauthorized();
@@ -55,7 +61,13 @@ public class TodoController : ControllerBase {
             Console.WriteLine("Id from token does not match id");
             return Unauthorized();
         }
+
+        _context.Todos.Add(todo);
+        await _context.SaveChangesAsync();
+        return Ok(todo);
     }
+
+    
 
     // [HttpGet("{id}")]
     // [Authorize (Roles = ("Admin"))]

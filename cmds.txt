@@ -1,0 +1,53 @@
+  127  ls bin/Release/net9.0/publish/ | grep "docker"
+  129  ls bin/Release/net9.0/publish/ | grep "docker"
+  212  cd docker-test/
+  215  systemctl status docker
+  216  docker image ls
+  218  sudo docker image ls
+  219  sudo docker container ls
+  228  sudo chmod 777 /var/run/docker.sock
+  233  cd docker-test/
+  245  cd docker-test/
+  297  docker
+  298  docker --help
+  299  docker image ls
+  300  sudo chmod 777 /var/run/docker.sock
+  301  docker image ls
+  302  docker pull gcc
+  303  docker image ls
+  335  cd docker-test/
+  380  touch .dockerignore
+  381  docker build -f Dockerfile -t my-app
+  382  docker build -f Dockerfile -t my-app .
+  383  docker run -d -it –rm -p 3000:3000 -name "test"
+  384  docker run -d -it –rm -p 3000:3000
+  385  docker run -it –rm -p 3000:3000
+  386  docker run -it -p 3000:3000
+  387  docker run -p 3000:3000
+  449  sudo chmod 777 /var/run/docker.sock
+  537  dotnet add reference /home/haarish/Documents/dotnet/docker-test/Authentication/JwtAuthentication/JwtAuthentication.csproj
+  539  docker build -f Dockerfile
+  540  docker build -f Dockerfile .
+  542  docker build --no-cache -t testUserService .
+  543  docker build --no-cache -t test-user-service .
+  592  dotnet remove "/home/haarish/Documents/dotnet/docker-test/UserService/UserService.csproj" reference "../Authentication/JwtAuthentication/JwtAuthentication.csproj"
+  598  docker build -f DockerfileUser .
+  599  docker build --help
+  600  docker build -f DockerfileUser -t test:test .
+  601  docker build -f DockerfileUserService -t UserService:service .
+  602  docker build -f DockerfileUserService -t userService:service .
+  603  docker build -f DockerfileUserService -t user-service:service .
+  604  docker build -f DockerfileTodoService -t todo-service:service .
+  605  cd Documents/dotnet/docker-test/
+  615  history | grep "docker.sock"
+  616  sudo chmod 777 /var/run/docker.sock
+  617  cd Documents/dotnet/docker-test/Authentication/
+  632  cd dotnet/docker-test/UserService/
+  659  docker build --help
+  661  docker copy --help
+  695  mv Dockerfile .dockerignore ../
+  724  cd docker-test/
+  871  history | grep "docker.sock"
+  872  sudo chmod 777 /var/run/docker.sock
+ 1124  history | grep "docker"
+ 1125  history | grep "docker" > cmds.txt

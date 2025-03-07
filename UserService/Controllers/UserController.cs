@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
+using Microsoft.Extensions.Primitives;
 
 namespace UserService.Controllers;
 
@@ -17,6 +19,8 @@ public class UserController : ControllerBase {
     private readonly JwtTokenHandler _jwtTokenHandler;
     private readonly UserDbContext _context;
     private readonly SignUpValidator _signupValidator;
+    private static readonly string authKey = "CustomBearer";
+    private static readonly string authValue = "Custom";
     public UserController(UserDbContext context, JwtTokenHandler jwtTokenHandler, SignUpValidator signUpValidator) {
         _context = context;
         _jwtTokenHandler = jwtTokenHandler;
@@ -30,28 +34,6 @@ public class UserController : ControllerBase {
         //     tempList.Add(new UserAccount { Id = user.Id, Username = user.Username, Password = user.Password, Role = "User" } )
         // );
         // _jwtTokenHandler.AddUsers(tempList);
-        // AddDefaultUsers();
-    }
-
-    // For development purpose
-    private void AddDefaultUsers() {
-        Console.WriteLine("AddDefaultUsers called");
-        List<UserAccount> tempList = new List<UserAccount>();
-        List<User> users = new List<User> {
-            new User { Id = 1, Username = "test", Password = "Test123", Email = "test@gmail.com", Name = "Test" },
-            new User { Id = 2, Username = "test1", Password = "Test1123", Email = "test1@gmail.com", Name = "Test1" },
-        };
-        users.ForEach(async user => {
-            // if (userExists(user)) return;
-            if (user.Username.Equals("test")) {
-                tempList.Add(new UserAccount { Id = user.Id, Username = user.Username, Password = user.Password, Role = "Admin" } );
-            } else {
-                tempList.Add(new UserAccount { Id = user.Id, Username = user.Username, Password = user.Password, Role = "User" } );
-            }
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-        });
-        _jwtTokenHandler.AddUsers(tempList);
     }
 
     [HttpGet]
@@ -154,6 +136,22 @@ public class UserController : ControllerBase {
         _context.Users.Remove(user);
         await _context.SaveChangesAsync();
         return Ok("Delete successfully");
+    }
+
+    // [HttpGet("/intercomm/microcomm/{id}")]
+    [HttpGet("/api/[controller]/microcomm/exists/{id}")]
+    public async Task<ActionResult<IEnumerable<User>>> MicroCommUserExists(long id) {
+        const string HeaderKeyName = "Authorization";
+        bool isHeaderPresent = Request.Headers.TryGetValue(HeaderKeyName, out StringValues headerValue);
+        if (!isHeaderPresent) return BadRequest();
+        string[] values = headerValue[0]!.Split(' ');
+        if (!values[0].Equals(authKey) || !values[1].Equals(authValue)) {
+            Console.WriteLine("Service communication auth failed");
+            return Unauthorized();
+        }
+        // Console.WriteLine("Header value: " + id + values[0] + "-" + values[1]);
+        
+        return null;
     }
 
     private Task<bool> userExists(User user) {

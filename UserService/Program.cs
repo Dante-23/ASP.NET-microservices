@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using UserService.Models;
 using JwtAuthentication;
+using UserService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var localMysqlConnString = builder.Configuration.GetConnectionString("LocalMysqlConn");
@@ -22,6 +23,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddHostedService<StartupTaskService>();
 
 var app = builder.Build();
 

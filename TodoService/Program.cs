@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TodoService.Models;
 using JwtAuthentication;
+using TodoService.Clients;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddHttpClient<UserServiceClient>(client => {
+    client.BaseAddress = new Uri("http://localhost:5110");
+});
 
 var app = builder.Build();
 
