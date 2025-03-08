@@ -2,3 +2,4 @@ TODO :-
     * Add logout function. 
     * One JWT token per user. 
     * Use one way hash function to store passwords. 
+    * Check how to automate API testing. 

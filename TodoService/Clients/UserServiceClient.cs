@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using TodoService.Models.DTOs;
 
@@ -11,10 +12,18 @@ public class UserServiceClient {
     public UserServiceClient(HttpClient httpClient) {
         _httpClient = httpClient;
     }
-    public async bool UserExists(long id) {
+    public async Task<bool> UserExists(long id) {
         var request = new HttpRequestMessage(HttpMethod.Get, $"api/User/microcomm/exists/{id}");
         request.Headers.Authorization = new AuthenticationHeaderValue(authKey, authValue);
-        var response = await _httpClient.SendAsync(request);
+        try {
+            HttpResponseMessage response = await _httpClient.SendAsync(request);
+            if (response.IsSuccessStatusCode) {
+                return true;
+            } else return false;
+        } catch (HttpRequestException e) {
+            Console.WriteLine(e);
+            return false;
+        }
     }
     public async void TestUserMicroCommApi() {
         Console.WriteLine("TestUserMicroCommApi");

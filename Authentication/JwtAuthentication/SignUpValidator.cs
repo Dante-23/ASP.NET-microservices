@@ -48,6 +48,8 @@ namespace JwtAuthentication {
             if (msg != null) return new SignUpValidationResponse {status = false, message = msg};
             msg = ValidatePassword();
             if (msg != null) return new SignUpValidationResponse {status = false, message = msg};
+            msg = ValidateName();
+            if (msg != null) return new SignUpValidationResponse {status = false, message = msg};
             else return new SignUpValidationResponse {status = true, message = ""};
         }
         // Validates that the username is not empty and within a specified length
@@ -69,6 +71,16 @@ namespace JwtAuthentication {
                 return "Invalid email format.";
             }
             return null;
+        }
+
+        public string? ValidateName() {
+            if (string.IsNullOrWhiteSpace(Name)) {
+                return "Name cannot be empty.";
+            } else if (Name.Length < 1 || Name.Length > 100) {
+                return "Name must be between 1 and 100 characters.";
+            } else if (!Regex.IsMatch(Name, @"^[a-zA-Z\s]+$")) {
+                return "Name can only contain letters and spaces.";
+            } else return null;
         }
 
         // Validates that the password meets specified strength requirements

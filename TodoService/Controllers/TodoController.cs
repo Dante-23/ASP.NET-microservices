@@ -28,8 +28,8 @@ public class TodoController : ControllerBase {
     // [Authorize]
     public async Task<ActionResult<IEnumerable<Todo>>> GetAllTodosOfUser(long id) {
         Console.WriteLine("GetAllTodosOfUser");
-        _userServiceClient.TestUserMicroCommApi();
-        return Ok("Ok");
+        bool userExists = await _userServiceClient.UserExists(id);
+        if (!userExists) return BadRequest();
         TokenData? tokenData = getUserDetailsFromToken();
         if (tokenData == null) {
             return Unauthorized();

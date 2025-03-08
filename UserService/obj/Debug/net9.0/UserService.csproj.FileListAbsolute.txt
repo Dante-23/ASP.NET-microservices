@@ -1080,3 +1080,8 @@
 /home/haarish/Documents/dotnet/MicroServices/UserService/obj/Debug/net9.0/ref/UserService.dll
 /home/haarish/Documents/dotnet/MicroServices/UserService/bin/Debug/net9.0/MySqlConnector.dll
 /home/haarish/Documents/dotnet/MicroServices/UserService/bin/Debug/net9.0/Pomelo.EntityFrameworkCore.MySql.dll
+/home/haarish/Documents/dotnet/MicroServices/UserService/bin/Debug/net9.0/System.Web.Cors.dll
+/home/haarish/Documents/dotnet/MicroServices/UserService/bin/Debug/net9.0/System.Net.Http.Formatting.dll
+/home/haarish/Documents/dotnet/MicroServices/UserService/bin/Debug/net9.0/System.Web.Http.dll
+/home/haarish/Documents/dotnet/MicroServices/UserService/bin/Debug/net9.0/System.Web.Http.Cors.dll
+/home/haarish/Documents/dotnet/MicroServices/UserService/bin/Debug/net9.0/Newtonsoft.Json.Bson.dll

@@ -24,6 +24,14 @@ builder.Services.AddSwaggerGen();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddHostedService<StartupTaskService>();
+builder.Services.AddCors(options => {
+    options.AddPolicy("ReactApp", policyBuilder => {
+        policyBuilder.WithOrigins("http://localhost:3001");
+        policyBuilder.AllowAnyHeader();
+        policyBuilder.AllowAnyMethod();
+        policyBuilder.AllowCredentials();
+    });
+});
 
 var app = builder.Build();
 
@@ -41,5 +49,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors("ReactApp");
 
 app.Run();

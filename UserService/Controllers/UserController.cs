@@ -71,7 +71,7 @@ public class UserController : ControllerBase {
         .SetName(addUserRequest.Name)
         .SetPassword(addUserRequest.Password)
         .Validate();
-        if (!signUpValidationResponse.status) return Ok(new AddUserResponse {Status = false, Message = signUpValidationResponse.message});
+        if (!signUpValidationResponse.status) return BadRequest(new AddUserResponse {Status = false, Message = signUpValidationResponse.message});
         User user = new User() {
             Username = addUserRequest.Username,
             Email = addUserRequest.Email,
@@ -80,7 +80,7 @@ public class UserController : ControllerBase {
         };
         bool exists = await userExists(user);
         if (exists) {
-            return BadRequest();
+            return BadRequest(new AddUserResponse {Status = true, Message = "User already exists"});
         }
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
@@ -150,8 +150,9 @@ public class UserController : ControllerBase {
             return Unauthorized();
         }
         // Console.WriteLine("Header value: " + id + values[0] + "-" + values[1]);
-        
-        return null;
+        var user = await _context.Users.FindAsync(id);
+        if (user == null) return NotFound();
+        return Ok();
     }
 
     private Task<bool> userExists(User user) {
