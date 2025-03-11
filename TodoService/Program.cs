@@ -17,6 +17,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddHostedService<UserSyncBackgroundService>();
 builder.Services.AddHttpClient<UserServiceClient>(client => {
     client.BaseAddress = new Uri("http://localhost:5110");
 });

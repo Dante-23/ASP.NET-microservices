@@ -71,6 +71,25 @@ public class TodoController : ControllerBase {
         return Ok(todo);
     }
 
+    [HttpDelete]
+    [Authorize]
+    public async Task<IActionResult> DeleteTodoOfUser(DeleteTodoRequest deleteTodoRequest) {
+        Console.WriteLine("DeleteTodoOfUser: " + deleteTodoRequest.UserId);
+        string todoId = deleteTodoRequest.Id;
+        long userId = deleteTodoRequest.UserId;
+        TokenData? tokenData = getUserDetailsFromToken();
+        if (tokenData == null) {
+            return Unauthorized();
+        }
+        int? idFromToken = tokenData.Id;
+        if (idFromToken != userId) {
+            Console.WriteLine("User id from token does not match given user id");
+            return Unauthorized();
+        }
+        await _todoDbService.RemoveAsync(todoId);
+        return Ok("Delete successfully");
+    }
+
     // [HttpGet("{id}")]
     // // [Authorize]
     // public async Task<ActionResult<IEnumerable<Todo>>> GetAllTodosOfUser(long id) {
