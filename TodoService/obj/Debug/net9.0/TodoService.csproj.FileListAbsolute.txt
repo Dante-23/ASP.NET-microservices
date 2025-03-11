@@ -505,3 +505,14 @@
 /home/haarish/Documents/dotnet/MicroServices/TodoService/obj/Debug/net9.0/TodoService.pdb
 /home/haarish/Documents/dotnet/MicroServices/TodoService/obj/Debug/net9.0/TodoService.genruntimeconfig.cache
 /home/haarish/Documents/dotnet/MicroServices/TodoService/obj/Debug/net9.0/ref/TodoService.dll
+/home/haarish/Documents/dotnet/MicroServices/TodoService/bin/Debug/net9.0/DnsClient.dll
+/home/haarish/Documents/dotnet/MicroServices/TodoService/bin/Debug/net9.0/MongoDB.Bson.dll
+/home/haarish/Documents/dotnet/MicroServices/TodoService/bin/Debug/net9.0/MongoDB.Driver.dll
+/home/haarish/Documents/dotnet/MicroServices/TodoService/bin/Debug/net9.0/SharpCompress.dll
+/home/haarish/Documents/dotnet/MicroServices/TodoService/bin/Debug/net9.0/Snappier.dll
+/home/haarish/Documents/dotnet/MicroServices/TodoService/bin/Debug/net9.0/ZstdSharp.dll
+/home/haarish/Documents/dotnet/MicroServices/TodoService/bin/Debug/net9.0/System.Web.Cors.dll
+/home/haarish/Documents/dotnet/MicroServices/TodoService/bin/Debug/net9.0/System.Net.Http.Formatting.dll
+/home/haarish/Documents/dotnet/MicroServices/TodoService/bin/Debug/net9.0/System.Web.Http.dll
+/home/haarish/Documents/dotnet/MicroServices/TodoService/bin/Debug/net9.0/System.Web.Http.Cors.dll
+/home/haarish/Documents/dotnet/MicroServices/TodoService/bin/Debug/net9.0/Newtonsoft.Json.Bson.dll

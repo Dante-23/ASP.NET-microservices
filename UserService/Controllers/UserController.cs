@@ -92,13 +92,17 @@ public class UserController : ControllerBase {
     [HttpPost("/api/[controller]/login")]
     public async Task<ActionResult<AuthenticationResponse>> LoginUser(AuthenticationRequest authenticationRequest) {
         var authenticationResponse = _jwtTokenHandler.GenerateJwtToken(authenticationRequest);
-        if (authenticationResponse == null) return Unauthorized();
-        return authenticationResponse;
+        if (authenticationResponse == null) {
+            authenticationResponse = new AuthenticationResponse { Id = 0, Username = null, ExpiresInSec = -1, JwtToken = null };
+            return Unauthorized(authenticationResponse);
+        }
+        return Ok(authenticationResponse);
     }
 
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<ActionResult<User>> updateUser(long id, string newName) {
-        Console.WriteLine(newName);
+        Console.WriteLine("New fullname: " + newName);
         TokenData? tokenData = getUserDetailsFromToken();
         if (tokenData == null) {
             return Unauthorized();
@@ -122,6 +126,7 @@ public class UserController : ControllerBase {
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> DeleteUser(long id) {
         TokenData? tokenData = getUserDetailsFromToken();
         if (tokenData == null) {

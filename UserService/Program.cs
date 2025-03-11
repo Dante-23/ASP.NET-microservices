@@ -45,11 +45,10 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
+app.UseCors("ReactApp");
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.UseCors("ReactApp");
 
 app.Run();

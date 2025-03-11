@@ -9,6 +9,10 @@ using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using TodoService.Clients;
+using MongoDB.Driver;
+using TodoService.Services;
+using TodoService.Models.DTOs;
+using MongoDB.Bson;
 
 namespace TodoService.Controllers;
 
@@ -17,55 +21,98 @@ namespace TodoService.Controllers;
 public class TodoController : ControllerBase {
     private readonly JwtTokenHandler _jwtTokenHandler;
     private readonly TodoDbContext _context;
+    // private readonly 
     private readonly UserServiceClient _userServiceClient;
-    public TodoController(TodoDbContext context, JwtTokenHandler jwtTokenHandler, UserServiceClient userServiceClient) {
+    private readonly TodoDbService _todoDbService;
+    public TodoController(TodoDbContext context, JwtTokenHandler jwtTokenHandler, UserServiceClient userServiceClient, TodoDbService todoDbService) {
         _context = context;
         _jwtTokenHandler = jwtTokenHandler;
         _userServiceClient = userServiceClient;
+        _todoDbService = todoDbService;
     }
 
-    [HttpGet("{id}")]
-    // [Authorize]
-    public async Task<ActionResult<IEnumerable<Todo>>> GetAllTodosOfUser(long id) {
-        Console.WriteLine("GetAllTodosOfUser");
-        bool userExists = await _userServiceClient.UserExists(id);
+    [HttpGet("{userid}")]
+    [Authorize]
+    public async Task<ActionResult<IEnumerable<Todo>>> GetAllTodosOfUser(long userid) {
+        Console.WriteLine("GetAllTodosOfUser with userid: " + userid);
+        bool userExists = await _userServiceClient.UserExists(userid);
         if (!userExists) return BadRequest();
         TokenData? tokenData = getUserDetailsFromToken();
         if (tokenData == null) {
             return Unauthorized();
         }
         int? idFromToken = tokenData.Id;
-        if (idFromToken != id) {
-            Console.WriteLine("Id from token does not match id");
+        if (idFromToken != userid) {
+            Console.WriteLine("User id from token does not match given user id");
             return Unauthorized();
         }
-        // TODO :- Check if user exists using microservice communication
-
-        // var todos = await _context.Todos.ToListAsync();
-        // todos =_context.Todos.Where(u => u.UserId == id).ToListAsync();
-        var todos = await _context.Todos
-        .Where(u => u.UserId == id)
-        .ToListAsync();
-        return Ok(todos);
+        return await _todoDbService.GetTodoOfUserId(userid);
     }
 
-    [HttpPost("{id}")]
+    [HttpPost]
     [Authorize]
-    public async Task<ActionResult<IEnumerable<Todo>>> AddTodo(long id, Todo todo) {
+    public async Task<IActionResult> AddTodoOfUser(AddTodoRequest addTodoRequest) {
+        long userid = addTodoRequest.UserId;
+        Console.WriteLine("AddTodoOfUser with userid: " + userid);
+        bool userExists = await _userServiceClient.UserExists(userid);
+        if (!userExists) return BadRequest();
         TokenData? tokenData = getUserDetailsFromToken();
         if (tokenData == null) {
             return Unauthorized();
         }
         int? idFromToken = tokenData.Id;
-        if (idFromToken != id) {
-            Console.WriteLine("Id from token does not match id");
+        if (idFromToken != userid) {
+            Console.WriteLine("User id from token does not match given user id");
             return Unauthorized();
         }
-
-        _context.Todos.Add(todo);
-        await _context.SaveChangesAsync();
+        string id = ObjectId.GenerateNewId().ToString();
+        Todo todo = new() { Id = id, UserId = addTodoRequest.UserId, Username = addTodoRequest.Username, Description = addTodoRequest.Description };
+        await _todoDbService.CreateAsync(todo);
         return Ok(todo);
     }
+
+    // [HttpGet("{id}")]
+    // // [Authorize]
+    // public async Task<ActionResult<IEnumerable<Todo>>> GetAllTodosOfUser(long id) {
+    //     Console.WriteLine("GetAllTodosOfUser");
+    //     bool userExists = await _userServiceClient.UserExists(id);
+    //     if (!userExists) return BadRequest();
+    //     TokenData? tokenData = getUserDetailsFromToken();
+        // if (tokenData == null) {
+        //     return Unauthorized();
+        // }
+    //     int? idFromToken = tokenData.Id;
+    //     if (idFromToken != id) {
+    //         Console.WriteLine("Id from token does not match id");
+    //         return Unauthorized();
+    //     }
+    //     // TODO :- Check if user exists using microservice communication
+
+    //     // var todos = await _context.Todos.ToListAsync();
+    //     // todos =_context.Todos.Where(u => u.UserId == id).ToListAsync();
+    //     var todos = await _context.Todos
+    //     .Where(u => u.UserId == id)
+    //     .ToListAsync();
+    //     return Ok(todos);
+    // }
+
+    // [HttpPost("{id}")]
+    // [Authorize]
+    // public async Task<ActionResult<IEnumerable<Todo>>> AddTodo(long id, Todo todo) {
+    //     TokenData? tokenData = getUserDetailsFromToken();
+    //     if (tokenData == null) {
+    //         return Unauthorized();
+    //     }
+    //     int? idFromToken = tokenData.Id;
+    //     if (idFromToken != id) {
+    //         Console.WriteLine("Id from token does not match id");
+    //         return Unauthorized();
+    //     }
+
+    //     _context.Todos.Add(todo);
+    //     await _context.SaveChangesAsync();
+    //     return Ok(todo);
+    // }
 
     
 

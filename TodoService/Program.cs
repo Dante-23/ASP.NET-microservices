@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using TodoService.Models;
 using JwtAuthentication;
 using TodoService.Clients;
+using TodoService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,19 @@ builder.Services.AddHttpClient<UserServiceClient>(client => {
     client.BaseAddress = new Uri("http://localhost:5110");
 });
 
+builder.Services.Configure<TodoDatabaseSettings>(
+    builder.Configuration.GetSection("TodoDatabase"));
+
+builder.Services.AddSingleton<TodoDbService>();
+builder.Services.AddCors(options => {
+    options.AddPolicy("ReactApp", policyBuilder => {
+        policyBuilder.WithOrigins("http://localhost:3001");
+        policyBuilder.AllowAnyHeader();
+        policyBuilder.AllowAnyMethod();
+        policyBuilder.AllowCredentials();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -32,6 +46,7 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
+app.UseCors("ReactApp");
 app.UseAuthentication();
 app.UseAuthorization();
 

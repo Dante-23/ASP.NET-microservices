@@ -55,7 +55,8 @@ namespace JwtAuthentication {
             return new AuthenticationResponse {
                 Username = userAccount.Username,
                 ExpiresInSec = (int)tokenExpiryTimeStamp.Subtract(DateTime.Now).TotalSeconds,
-                JwtToken = token
+                JwtToken = token,
+                Id = userAccount.Id
             };
         }
     }
