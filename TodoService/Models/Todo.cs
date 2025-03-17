@@ -14,4 +14,6 @@ public class Todo {
     public required long UserId {get; set;}
     [BsonElement("_description"), BsonRepresentation(BsonType.String)]
     public required string Description {get; set;}
+    [BsonElement("_category"), BsonRepresentation(BsonType.String)]
+    public required string Category {get; set;}
 }

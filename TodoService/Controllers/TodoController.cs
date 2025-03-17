@@ -66,8 +66,30 @@ public class TodoController : ControllerBase {
             return Unauthorized();
         }
         string id = ObjectId.GenerateNewId().ToString();
-        Todo todo = new() { Id = id, UserId = addTodoRequest.UserId, Username = addTodoRequest.Username, Description = addTodoRequest.Description };
+        Todo todo = new() { Id = id, UserId = addTodoRequest.UserId, Username = addTodoRequest.Username, Description = addTodoRequest.Description, Category = addTodoRequest.Category };
         await _todoDbService.CreateAsync(todo);
+        return Ok(todo);
+    }
+
+    [HttpPut]
+    [Authorize]
+    public async Task<IActionResult> UpdateTodoOfUser(UpdateTodoRequest updateTodoRequest) {
+        long userid = updateTodoRequest.UserId;
+        Console.WriteLine("UpdateTodoOfUser with userid: " + userid);
+        bool userExists = await _userServiceClient.UserExists(userid);
+        if (!userExists) return BadRequest();
+        TokenData? tokenData = getUserDetailsFromToken();
+        if (tokenData == null) {
+            return Unauthorized();
+        }
+        int? idFromToken = tokenData.Id;
+        if (idFromToken != userid) {
+            Console.WriteLine("User id from token does not match given user id");
+            return Unauthorized();
+        }
+        Todo todo = await _todoDbService.GetAsync(updateTodoRequest.Id);
+        todo.Description = updateTodoRequest.Description;
+        await _todoDbService.UpdateAsync(updateTodoRequest.Id, todo);
         return Ok(todo);
     }
 
