@@ -59,13 +59,25 @@ public class BudgetController : ControllerBase {
         if (idFromToken != userid) {
             return Unauthorized("User id from token does not match given user id");
         }
-        long maxAmount = _managerHostedService.GetMaxAmountGivenBudgetName(addExpenseRequest.BudgetName);
-        if (maxAmount == ManagerHostedService.BUDGET_NOT_FOUND) {
-            Console.WriteLine("First time addition of the budget named " + addExpenseRequest.BudgetName);
-            maxAmount = addExpenseRequest.MaxAmount;
-            _managerHostedService.AddBudget(addExpenseRequest.BudgetName, new KeyValuePair<long, long>(addExpenseRequest.Amount, maxAmount));
-        } else if (maxAmount != addExpenseRequest.MaxAmount) {
-            Console.WriteLine("maxAmount != addExpenseRequest.MaxAmount.. Using stored max amount value");
+        // long maxAmount = _managerHostedService.GetMaxAmountGivenBudgetName(addExpenseRequest.BudgetName);
+        // bool response = false;
+        // if (maxAmount == ManagerHostedService.BUDGET_NOT_FOUND) {
+        //     Console.WriteLine("First time addition of the budget named " + addExpenseRequest.BudgetName);
+        //     maxAmount = addExpenseRequest.MaxAmount;
+        //     response = _managerHostedService.AddBudget(addExpenseRequest.BudgetName, new KeyValuePair<long, long>(addExpenseRequest.Amount, maxAmount));
+        // } else if (maxAmount != addExpenseRequest.MaxAmount) {
+        //     Console.WriteLine("maxAmount != addExpenseRequest.MaxAmount.. Using stored max amount value");
+        //     response = _managerHostedService.UpdateBudgetIncreaseAmount(addExpenseRequest.BudgetName, addExpenseRequest.Amount);
+        // } else {
+        //     response = _managerHostedService.UpdateBudgetIncreaseAmount(addExpenseRequest.BudgetName, addExpenseRequest.Amount);
+        // }
+        // if (!response) {
+        //     Console.WriteLine("Error trying to add/update budget.");
+        //     return BadRequest("Error trying to add/update budget.");
+        // }
+        long maxAmount = await _managerHostedService.GetMaxAmountGivenBudgetName(addExpenseRequest.UserId, addExpenseRequest.BudgetName);
+        if (maxAmount == -1) {
+            return BadRequest("Cannot find max amount of budget " + addExpenseRequest.BudgetName);
         }
         string id = ObjectId.GenerateNewId().ToString();
         Expense expense = new Expense {
@@ -77,6 +89,7 @@ public class BudgetController : ControllerBase {
             Budget = new Budget {BudgetName = addExpenseRequest.BudgetName, MaxAmount = maxAmount}
         };
         await _expenseDbService.CreateAsync(expense);
+        // _managerHostedService.PrintBudgetSummary();
         return Ok(expense);
     }
 
@@ -103,6 +116,27 @@ public class BudgetController : ControllerBase {
         /*
             If this expense is the last expense of its budget, delete the budget from hosted service
         */
+        // long amount = _managerHostedService.GetAmountFromBudget(deleteExpenseRequest.BudgetName);
+        // if (amount == -1) {
+        //     Console.WriteLine("Error while serving delete expense request. Cannot find budget...");
+        //     return BadRequest("Cannot find budget.");
+        // }
+        // Expense? expense = await _expenseDbService.GetAsync(deleteExpenseRequest.Id);
+        // if (expense == null) {
+        //     Console.WriteLine("Error while serving delete expense request. Cannot find expense...");
+        //     return BadRequest("Cannot find expense.");
+        // }
+        // await _expenseDbService.RemoveAsync(deleteExpenseRequest.Id);
+        // if (expense.Amount == amount) {
+        //     // Last expense of the budget. Delete budget. 
+        //     bool response = _managerHostedService.DeleteBudget(deleteExpenseRequest.BudgetName);
+        //     if (!response) {
+        //         Console.WriteLine("Error trying to delete budget.");
+        //         return BadRequest("Error trying to delete budget.");
+        //     }
+        // }
+        await _expenseDbService.RemoveAsync(deleteExpenseRequest.Id);
+        // _managerHostedService.PrintBudgetSummary();
         return Ok();
     }
 

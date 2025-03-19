@@ -1,6 +1,7 @@
 using BudgetService.Clients;
 using BudgetService.Models;
 using Humanizer;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace BudgetService.Services {
     public class ManagerHostedService : IHostedService {
@@ -31,17 +32,42 @@ namespace BudgetService.Services {
                 }
             });
         }
-        public long GetMaxAmountGivenBudgetName(string budgetName) {
-            if (!_budgetAmountDict.ContainsKey(budgetName)) return BUDGET_NOT_FOUND;
-            return _budgetAmountDict[budgetName].Value;
+        public async Task<long> GetMaxAmountGivenBudgetName(long userid, string budgetName) {
+            List<Expense> expenses = await _expenseDbService.GetAsync();
+            long response = -1;
+            expenses.ForEach(expense => {
+                if (expense.UserId == userid && expense.Budget.BudgetName == budgetName) {
+                    response = expense.Budget.MaxAmount;
+                    return;
+                }
+            });
+            return response;
         }
         public bool AddBudget(string budgetName, KeyValuePair<long, long> keyValuePair) {
             if (_budgetAmountDict.ContainsKey(budgetName)) return false;
             _budgetAmountDict.Add(budgetName, keyValuePair);
             return true;
         }
-        public int GetExpensesGivenBudget(string budgetName) {
-            
+        public bool UpdateBudgetIncreaseAmount(string budgetName, long amountToIncrease) {
+            if (!_budgetAmountDict.ContainsKey(budgetName)) return false;
+            KeyValuePair<long, long> value = _budgetAmountDict[budgetName];
+            KeyValuePair<long, long> newValue = new(value.Key + amountToIncrease, value.Value);
+            _budgetAmountDict[budgetName] = newValue;
+            return true;
+        }
+        public long GetAmountFromBudget(string budgetName) {
+            if (!_budgetAmountDict.ContainsKey(budgetName)) return -1;
+            return _budgetAmountDict[budgetName].Key;
+        }
+        public bool DeleteBudget(string budgetName) {
+            if (!_budgetAmountDict.ContainsKey(budgetName)) return false;
+            _budgetAmountDict.Remove(budgetName);
+            return true;
+        }
+        public void PrintBudgetSummary() {
+            foreach (var item in _budgetAmountDict) {
+                Console.WriteLine(item.Key + " -> (" + item.Value.Key + ", " + item.Value.Value + ")");
+            }
         }
         public Task StopAsync(CancellationToken cancellationToken) {
             Console.WriteLine("StopAsync");
