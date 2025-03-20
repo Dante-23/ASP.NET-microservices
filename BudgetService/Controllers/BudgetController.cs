@@ -77,7 +77,9 @@ public class BudgetController : ControllerBase {
         // }
         long maxAmount = await _managerHostedService.GetMaxAmountGivenBudgetName(addExpenseRequest.UserId, addExpenseRequest.BudgetName);
         if (maxAmount == -1) {
-            return BadRequest("Cannot find max amount of budget " + addExpenseRequest.BudgetName);
+            maxAmount = addExpenseRequest.MaxAmount;
+        } else if (maxAmount != addExpenseRequest.MaxAmount) {
+            return BadRequest("Incorrect max amount from add request");
         }
         string id = ObjectId.GenerateNewId().ToString();
         Expense expense = new Expense {

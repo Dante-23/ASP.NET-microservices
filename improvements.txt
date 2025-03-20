@@ -1,0 +1,5 @@
+Input sanitization of all inputs. 
+Store password hash. 
+Add end point to store authentication tokens longer at the client side. 
+Implement background task queues for syncing different services. 
+Implement API gateway using ocelot. 
